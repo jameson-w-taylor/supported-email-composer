@@ -8,12 +8,15 @@ import { EmailComposer } from '@ionic-enterprise/email-composer/ngx';
 })
 export class HomePage {
 
-  constructor(private emailComposer: EmailComposer) {
-    
-  }
+  constructor(private emailComposer: EmailComposer) {}
 
-  canEmail() {
-    this.emailComposer.isAvailable().then(result => console.log('Can Email: ', result));
+  async openDefault() {
+    const result = await this.emailComposer.hasClient('mailto');
+    console.log(`Device has client "mailto": ${result}`);
+    try {
+      await this.emailComposer.open({ app: 'mailto', subject: 'This is a test' });
+    } catch (e) {
+      console.log('Failed to open "mailto" client', e);
+    }
   }
-
 }
